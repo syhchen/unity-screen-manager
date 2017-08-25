@@ -60,7 +60,9 @@ public class ScreenManager : SingletonMonoBehaviour<ScreenManager> {
 
         if (nextScreenIndex == -1 && CanNavigateBack()) {
             _navigationStack.Pop();
-        } else if (nextScreenIndex >= 0 && nextScreenIndex < Screens.Count) {
+        } else if (nextScreenIndex >= 0 &&
+            nextScreenIndex < Screens.Count &&
+            Screens[nextScreenIndex] != CurrentScreen) {
             _navigationStack.Push(Screens[nextScreenIndex]);
         }
         else {
