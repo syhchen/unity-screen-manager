@@ -11,9 +11,4 @@ public class DemoScreenB : ScreenPanel {
 		public void NavigateToDemoScreenA() {
 		ScreenManager.Instance.NavigateTo("DemoScreenA");
 	}
-
-	// TODO: movo to ScreenPanel
-	public void NavigateBack() {
-		ScreenManager.Instance.NavigateBack();
-	}
 }

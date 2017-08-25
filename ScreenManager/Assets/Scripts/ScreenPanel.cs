@@ -9,4 +9,8 @@ public class ScreenPanel : MonoBehaviour {
     public ScreenPanel(string name) : base() {
         Name = name;
     }
+
+    public void NavigateBack() {
+		ScreenManager.Instance.NavigateBack();
+	}
 }
