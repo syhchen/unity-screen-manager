@@ -7,7 +7,7 @@ public class ScreenManager : SingletonMonoBehaviour<ScreenManager> {
 
     public static readonly UITransition.AnimateMode MODE = UITransition.AnimateMode.PAGE;
     public static readonly float DELAY = 0.0f;
-    public static readonly float DURATION = 0.32f;
+    public static readonly float DURATION = 0.24f;
     
     public List<ScreenPanel> Screens { get; private set; }
     public Dictionary<string, int> AvailableScreens { get; private set; }

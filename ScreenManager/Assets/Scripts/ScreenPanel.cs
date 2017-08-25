@@ -29,11 +29,10 @@ public class ScreenPanel : MonoBehaviour {
         _animateScreen(delay, duration, mode, isAnimateForward, true);
     }
 
-    // TODO: anonymous function to SetActive(false) only after animation is complete
     public virtual void HideScreen(float delay, float duration, UITransition.AnimateMode mode, bool isAnimateForward) {
-        _animateScreen(delay, duration, mode, isAnimateForward, false);
-
-        // gameObject.SetActive(false);
+        _animateScreen(delay, duration, mode, isAnimateForward, false, () => {
+            gameObject.SetActive(false);
+        });
     }
 
     public void NavigateBack() {
@@ -41,7 +40,7 @@ public class ScreenPanel : MonoBehaviour {
 	}
 
     // TODO: prevent touch events when animating
-    private void _animateScreen(float delay, float duration, UITransition.AnimateMode mode, bool isAnimateForward, bool isShow) {
+    private void _animateScreen(float delay, float duration, UITransition.AnimateMode mode, bool isAnimateForward, bool isShow, TweenCallback cb = null) {
         if (mode == UITransition.AnimateMode.PAGE) {
             float widthOffset = _rectTransform.rect.width;
 
@@ -64,9 +63,9 @@ public class ScreenPanel : MonoBehaviour {
 
             // manage ending position based on isAnimateForward
             if (isAnimateForward) {
-                seq.Append(transform.DOLocalMoveX(-startPositionOffset, duration));
+                seq.Append(transform.DOLocalMoveX(-startPositionOffset, duration)).OnComplete(cb);
             } else { // animateBackward
-                seq.Append(transform.DOLocalMoveX(startPositionOffset, duration));
+                seq.Append(transform.DOLocalMoveX(startPositionOffset, duration)).OnComplete(cb);
             }
         } else {
             Debug.LogError("Unrecognized AnimateMode '" + mode + "'");
