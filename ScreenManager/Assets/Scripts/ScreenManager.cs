@@ -6,6 +6,8 @@ using DG.Tweening;
 public class ScreenManager : SingletonMonoBehaviour<ScreenManager> {
 
     public static readonly UITransition.AnimateMode MODE = UITransition.AnimateMode.PAGE;
+
+    // TODO: move to UITransition or ScreenPanel
     public static readonly float DELAY = 0.0f;
     public static readonly float DURATION = 0.24f;
     

@@ -6,7 +6,9 @@ using DG.Tweening;
 
 public class ScreenPanel : MonoBehaviour {
 
+    // TODO: move to UITransition
     public static readonly Ease EASE = Ease.InOutSine;
+    public static readonly float PARALLAX_MULT = 2.0f;
 
     public string Name { get; private set; }
 
@@ -25,6 +27,7 @@ public class ScreenPanel : MonoBehaviour {
 
     public virtual void ShowScreen(float delay, float duration, UITransition.AnimateMode mode, bool isAnimateForward) {
         gameObject.SetActive(true);
+        _rectTransform.SetAsFirstSibling();
 
         _animateScreen(delay, duration, mode, isAnimateForward, true);
     }
