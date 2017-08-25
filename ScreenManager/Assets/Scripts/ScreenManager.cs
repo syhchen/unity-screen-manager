@@ -48,6 +48,13 @@ public class ScreenManager : SingletonMonoBehaviour<ScreenManager> {
         return (_navigationStack != null && _navigationStack.Count > 1);
     }
 
+    private void _handleScreenTransition(ScreenPanel nextScreen) {
+        if (CurrentScreen) CurrentScreen.gameObject.SetActive(false);
+        
+        nextScreen.gameObject.SetActive(true);
+        CurrentScreen = nextScreen;
+    }
+
     private bool _navigateTo(int nextScreenIndex, bool resetNavigationStack) { // index of target screen, or if -1 go back to last screen in stack
         if (resetNavigationStack) _navigationStack.Clear();
 
@@ -60,7 +67,7 @@ public class ScreenManager : SingletonMonoBehaviour<ScreenManager> {
             return false;
         }
 
-        CurrentScreen = _navigationStack.Peek();
+        _handleScreenTransition(_navigationStack.Peek());
 
         return true;
     }
