@@ -6,10 +6,6 @@ using DG.Tweening;
 public class ScreenManager : SingletonMonoBehaviour<ScreenManager> {
 
     public static readonly UITransition.AnimateMode MODE = UITransition.AnimateMode.PAGE;
-
-    // TODO: move to UITransition or ScreenPanel
-    public static readonly float DELAY = 0.0f;
-    public static readonly float DURATION = 0.24f;
     
     public List<ScreenPanel> Screens { get; private set; }
     public Dictionary<string, int> AvailableScreens { get; private set; }
@@ -55,9 +51,9 @@ public class ScreenManager : SingletonMonoBehaviour<ScreenManager> {
     }
 
     private void _handleScreenTransition(ScreenPanel nextScreen, bool isAnimateForward) {
-        if (CurrentScreen) CurrentScreen.HideScreen(DELAY, DURATION, MODE, isAnimateForward);
+        if (CurrentScreen) CurrentScreen.HideScreen(UITransition.DELAY, UITransition.DURATION, MODE, isAnimateForward);
         
-        nextScreen.ShowScreen(DELAY, DURATION, MODE, isAnimateForward);
+        nextScreen.ShowScreen(UITransition.DELAY, UITransition.DURATION, MODE, isAnimateForward);
         CurrentScreen = nextScreen;
     }
 

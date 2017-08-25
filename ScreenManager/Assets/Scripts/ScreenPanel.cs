@@ -6,10 +6,6 @@ using DG.Tweening;
 
 public class ScreenPanel : MonoBehaviour {
 
-    // TODO: move to UITransition
-    public static readonly Ease EASE = Ease.InOutSine;
-    public static readonly float PARALLAX_MULT = 2.0f;
-
     public string Name { get; private set; }
 
     protected RectTransform _rectTransform;
@@ -27,13 +23,13 @@ public class ScreenPanel : MonoBehaviour {
 
     public virtual void ShowScreen(float delay, float duration, UITransition.AnimateMode mode, bool isAnimateForward) {
         gameObject.SetActive(true);
-        _rectTransform.SetAsFirstSibling();
+        _rectTransform.SetAsLastSibling();
 
         _animateScreen(delay, duration, mode, isAnimateForward, true);
     }
 
     public virtual void HideScreen(float delay, float duration, UITransition.AnimateMode mode, bool isAnimateForward) {
-        _animateScreen(delay, duration, mode, isAnimateForward, false, () => {
+        _animateScreen(delay, duration*UITransition.PARALLAX_MULT, mode, isAnimateForward, false, () => {
             gameObject.SetActive(false);
         });
     }
@@ -48,7 +44,7 @@ public class ScreenPanel : MonoBehaviour {
             float widthOffset = _rectTransform.rect.width;
 
             Sequence seq = DOTween.Sequence();
-            seq.SetEase(EASE);
+            seq.SetEase(UITransition.EASE);
             seq.AppendInterval(delay);
 
             // manage AnimateDirection based on mode
