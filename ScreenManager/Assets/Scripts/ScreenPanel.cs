@@ -6,31 +6,72 @@ using DG.Tweening;
 
 public class ScreenPanel : MonoBehaviour {
 
+    public static readonly Ease EASE = Ease.InOutSine;
+
     public string Name { get; private set; }
+
+    protected RectTransform _rectTransform;
 
     public ScreenPanel(string name) : base() {
         Name = name;
     }
 
-    public virtual void ShowScreen() {
-        gameObject.SetActive(true);
-
-        // float widthOffset = _rectTransform.rect.width;
-        // Vector3 startPosition = new Vector3(widthOffset, 0, 0);
-        // _rectTransform.localPosition = startPosition;
-
-        // // tween the panel to the desired position
-        // Sequence seq = DOTween.Sequence();
-        // seq.AppendInterval(delay);
-        // seq.Append(transform.DOLocalMoveX(0, duration));
-        // seq.AppendCallback(ShowScreenDone);
+    public virtual void Awake() {
+        _rectTransform = gameObject.GetComponent<RectTransform>();
+        if (_rectTransform == null) {
+            Debug.LogError("No Rect Transform found on GameObject '" + gameObject.name + "'");
+        }
     }
 
-    public virtual void HideScreen() {
-        gameObject.SetActive(false);
+    public virtual void ShowScreen(float delay, float duration, UITransition.AnimateMode mode, bool isAnimateForward) {
+        gameObject.SetActive(true);
+
+        _animateScreen(delay, duration, mode, isAnimateForward, true);
+    }
+
+    // TODO: anonymous function to SetActive(false) only after animation is complete
+    public virtual void HideScreen(float delay, float duration, UITransition.AnimateMode mode, bool isAnimateForward) {
+        _animateScreen(delay, duration, mode, isAnimateForward, false);
+
+        // gameObject.SetActive(false);
     }
 
     public void NavigateBack() {
 		ScreenManager.Instance.NavigateBack();
 	}
+
+    // TODO: prevent touch events when animating
+    private void _animateScreen(float delay, float duration, UITransition.AnimateMode mode, bool isAnimateForward, bool isShow) {
+        if (mode == UITransition.AnimateMode.PAGE) {
+            float widthOffset = _rectTransform.rect.width;
+
+            Sequence seq = DOTween.Sequence();
+            seq.SetEase(EASE);
+            seq.AppendInterval(delay);
+
+            // manage AnimateDirection based on mode
+            UITransition.AnimateDirection direction = isAnimateForward ? UITransition.AnimateDirection.LEFT : UITransition.AnimateDirection.RIGHT;
+
+            // manage starting position based on isShow and isAnimateForward
+            float startPositionOffset = 0.0f;
+            if (isShow && isAnimateForward) {
+                _rectTransform.localPosition = new Vector3(widthOffset, 0, 0);
+            } else if (isShow && !isAnimateForward) {
+                _rectTransform.localPosition = new Vector3(-widthOffset, 0, 0);
+            } else { // otherwise, keep position, is existing screen (to hide)
+                startPositionOffset = widthOffset;
+            }
+
+            // manage ending position based on isAnimateForward
+            if (isAnimateForward) {
+                seq.Append(transform.DOLocalMoveX(-startPositionOffset, duration));
+            } else { // animateBackward
+                seq.Append(transform.DOLocalMoveX(startPositionOffset, duration));
+            }
+        } else {
+            Debug.LogError("Unrecognized AnimateMode '" + mode + "'");
+
+            return;
+        }
+    }
 }
