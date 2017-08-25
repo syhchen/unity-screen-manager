@@ -49,9 +49,9 @@ public class ScreenManager : SingletonMonoBehaviour<ScreenManager> {
     }
 
     private void _handleScreenTransition(ScreenPanel nextScreen) {
-        if (CurrentScreen) CurrentScreen.gameObject.SetActive(false);
+        if (CurrentScreen) CurrentScreen.HideScreen();
         
-        nextScreen.gameObject.SetActive(true);
+        nextScreen.ShowScreen();
         CurrentScreen = nextScreen;
     }
 
