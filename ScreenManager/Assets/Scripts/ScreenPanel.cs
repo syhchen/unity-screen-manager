@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,16 +22,19 @@ public class ScreenPanel : MonoBehaviour {
         }
     }
 
-    public virtual void ShowScreen(float delay, float duration, UITransition.AnimateMode mode, bool isAnimateForward) {
+    public virtual void ShowScreen(float delay, float duration, UITransition.AnimateMode mode, bool isAnimateForward, Action cb = null) {
         gameObject.SetActive(true);
         _rectTransform.SetAsLastSibling();
 
-        _animateScreen(delay, duration, mode, isAnimateForward, true);
+        _animateScreen(delay, duration, mode, isAnimateForward, true, () => {
+            cb();
+        });
     }
 
-    public virtual void HideScreen(float delay, float duration, UITransition.AnimateMode mode, bool isAnimateForward) {
+    public virtual void HideScreen(float delay, float duration, UITransition.AnimateMode mode, bool isAnimateForward, Action cb = null) {
         _animateScreen(delay, duration*UITransition.PARALLAX_MULT, mode, isAnimateForward, false, () => {
             gameObject.SetActive(false);
+            cb();
         });
     }
 
@@ -47,6 +51,7 @@ public class ScreenPanel : MonoBehaviour {
             seq.SetEase(UITransition.EASE);
             seq.AppendInterval(delay);
 
+            // TODO: make sure this is used;
             // manage AnimateDirection based on mode
             UITransition.AnimateDirection direction = isAnimateForward ? UITransition.AnimateDirection.LEFT : UITransition.AnimateDirection.RIGHT;
 

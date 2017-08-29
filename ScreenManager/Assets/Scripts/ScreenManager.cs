@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
+
 public class ScreenManager : SingletonMonoBehaviour<ScreenManager> {
 
     public static readonly UITransition.AnimateMode MODE = UITransition.AnimateMode.PAGE;
@@ -12,6 +13,8 @@ public class ScreenManager : SingletonMonoBehaviour<ScreenManager> {
     public ScreenPanel CurrentScreen { get; private set; }
 
     private Stack<ScreenPanel> _navigationStack;
+    private bool _isShowing;
+    private bool _isHiding;
 
     protected override void Awake() {
         base.Awake();
@@ -19,6 +22,8 @@ public class ScreenManager : SingletonMonoBehaviour<ScreenManager> {
         Screens = new List<ScreenPanel>();
         AvailableScreens = new Dictionary<string, int>();
         _navigationStack = new Stack<ScreenPanel>();
+        _isShowing = false;
+        _isHiding = false;
     }
 
     public void Initialize(ScreenPanel[] screens) {
@@ -31,18 +36,18 @@ public class ScreenManager : SingletonMonoBehaviour<ScreenManager> {
         }
     }
 
-    public bool NavigateTo(string nextScreenName, bool resetNavigationStack = false) {
+    public void NavigateTo(string nextScreenName, bool resetNavigationStack = false) {
         if (!AvailableScreens.ContainsKey(nextScreenName)) {
 
-            return false;
+            return;
         }
 
-        return _navigateTo(AvailableScreens[nextScreenName], resetNavigationStack);
+        _navigateTo(AvailableScreens[nextScreenName], resetNavigationStack);
     }
 
-    public bool NavigateBack() {
+    public void NavigateBack() {
 
-        return _navigateTo(-1, false);
+        _navigateTo(-1, false);
     }
 
     public bool CanNavigateBack() {
@@ -50,31 +55,45 @@ public class ScreenManager : SingletonMonoBehaviour<ScreenManager> {
         return (_navigationStack != null && _navigationStack.Count > 1);
     }
 
+
     private void _handleScreenTransition(ScreenPanel nextScreen, bool isAnimateForward) {
-        if (CurrentScreen) CurrentScreen.HideScreen(UITransition.DELAY, UITransition.DURATION, MODE, isAnimateForward);
-        
-        nextScreen.ShowScreen(UITransition.DELAY, UITransition.DURATION, MODE, isAnimateForward);
+        // only hide the current screen if there is one
+        if (CurrentScreen) {
+            CurrentScreen.HideScreen(UITransition.DELAY, UITransition.DURATION, MODE, isAnimateForward, () => {
+                _isHiding = false;
+            });
+        }
+        else {
+            _isHiding = false;
+        }
+        nextScreen.ShowScreen(UITransition.DELAY, UITransition.DURATION, MODE, isAnimateForward, () => {
+            _isShowing = false;
+        });
+
         CurrentScreen = nextScreen;
     }
 
-    private bool _navigateTo(int nextScreenIndex, bool resetNavigationStack) { // index of target screen, or if -1 go back to last screen in stack
-        if (resetNavigationStack) _navigationStack.Clear();
+    private void _navigateTo(int nextScreenIndex, bool resetNavigationStack) { // index of target screen, or if -1 go back to last screen in stack
+        if(!_isShowing && !_isHiding) {
+            _isShowing = true;
+            _isHiding = true;
 
-        bool isAnimateForward = true;
-        if (nextScreenIndex == -1 && CanNavigateBack()) {
-            _navigationStack.Pop();
-            isAnimateForward = !isAnimateForward;
-        } else if (nextScreenIndex >= 0 &&
-            nextScreenIndex < Screens.Count &&
-            Screens[nextScreenIndex] != CurrentScreen) {
-            _navigationStack.Push(Screens[nextScreenIndex]);
+            if (resetNavigationStack) _navigationStack.Clear();
+
+            bool isAnimateForward = true;
+            if (nextScreenIndex == -1 && CanNavigateBack()) {
+                _navigationStack.Pop();
+                isAnimateForward = !isAnimateForward;
+            } else if (nextScreenIndex >= 0 &&
+                nextScreenIndex < Screens.Count &&
+                Screens[nextScreenIndex] != CurrentScreen) {
+                _navigationStack.Push(Screens[nextScreenIndex]);
+            }
+            else {
+                return;
+            }
+
+            _handleScreenTransition(_navigationStack.Peek(), isAnimateForward);
         }
-        else {
-            return false;
-        }
-
-        _handleScreenTransition(_navigationStack.Peek(), isAnimateForward);
-
-        return true;
     }
 }
