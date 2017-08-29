@@ -7,8 +7,4 @@ public class DemoScreenA : ScreenPanel {
 	public static readonly string NAME = "DemoScreenA";
 
 	public DemoScreenA() : base(NAME) {}
-
-	public void NavigateToDemoScreenB() {
-		ScreenManager.Instance.NavigateTo("DemoScreenB");
-	}
 }

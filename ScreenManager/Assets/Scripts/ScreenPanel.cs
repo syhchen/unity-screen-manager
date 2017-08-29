@@ -22,6 +22,13 @@ public class ScreenPanel : MonoBehaviour {
         }
     }
 
+    public void NavigateTo(string nextScreenName) {
+        ScreenManager.Instance.NavigateTo(nextScreenName);
+    }
+     public void NavigateBack() {
+		ScreenManager.Instance.NavigateBack();
+	}
+
     public virtual void ShowScreen(float delay, float duration, UITransition.AnimateMode mode, bool isAnimateForward, Action cb = null) {
         gameObject.SetActive(true);
         _rectTransform.SetAsLastSibling();
@@ -37,10 +44,6 @@ public class ScreenPanel : MonoBehaviour {
             cb();
         });
     }
-
-    public void NavigateBack() {
-		ScreenManager.Instance.NavigateBack();
-	}
 
     // TODO: prevent touch events when animating
     private void _animateScreen(float delay, float duration, UITransition.AnimateMode mode, bool isAnimateForward, bool isShow, TweenCallback cb = null) {
