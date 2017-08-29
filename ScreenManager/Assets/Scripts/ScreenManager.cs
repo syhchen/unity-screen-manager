@@ -55,18 +55,17 @@ public class ScreenManager : SingletonMonoBehaviour<ScreenManager> {
         return (_navigationStack != null && _navigationStack.Count > 1);
     }
 
-
     private void _handleScreenTransition(ScreenPanel nextScreen, bool isAnimateForward) {
         // only hide the current screen if there is one
         if (CurrentScreen) {
-            CurrentScreen.HideScreen(UITransition.DELAY, UITransition.DURATION, MODE, isAnimateForward, () => {
+            CurrentScreen.HideScreen(MODE, isAnimateForward, () => {
                 _isHiding = false;
             });
         }
         else {
             _isHiding = false;
         }
-        nextScreen.ShowScreen(UITransition.DELAY, UITransition.DURATION, MODE, isAnimateForward, () => {
+        nextScreen.ShowScreen(MODE, isAnimateForward, () => {
             _isShowing = false;
         });
 

@@ -29,34 +29,30 @@ public class ScreenPanel : MonoBehaviour {
 		ScreenManager.Instance.NavigateBack();
 	}
 
-    public virtual void ShowScreen(float delay, float duration, UITransition.AnimateMode mode, bool isAnimateForward, Action cb = null) {
+    public virtual void ShowScreen(UITransition.AnimateMode mode, bool isAnimateForward, Action cb = null, float delay = UITransition.DELAY, float duration = UITransition.DURATION) {
         gameObject.SetActive(true);
         _rectTransform.SetAsLastSibling();
 
-        _animateScreen(delay, duration, mode, isAnimateForward, true, () => {
+        _animateScreen(mode, isAnimateForward, () => {
             cb();
-        });
+        }, delay, duration, true);
     }
 
-    public virtual void HideScreen(float delay, float duration, UITransition.AnimateMode mode, bool isAnimateForward, Action cb = null) {
-        _animateScreen(delay, duration*UITransition.PARALLAX_MULT, mode, isAnimateForward, false, () => {
+    public virtual void HideScreen(UITransition.AnimateMode mode, bool isAnimateForward, Action cb = null, float delay = UITransition.DELAY, float duration = UITransition.DURATION*UITransition.PARALLAX_MULT) {
+        _animateScreen(mode, isAnimateForward, () => {
             gameObject.SetActive(false);
             cb();
-        });
+        }, delay, duration, false);
     }
 
     // TODO: prevent touch events when animating
-    private void _animateScreen(float delay, float duration, UITransition.AnimateMode mode, bool isAnimateForward, bool isShow, TweenCallback cb = null) {
+    private void _animateScreen(UITransition.AnimateMode mode, bool isAnimateForward, TweenCallback cb, float delay, float duration, bool isShow) {
         if (mode == UITransition.AnimateMode.PAGE) {
             float widthOffset = _rectTransform.rect.width;
 
             Sequence seq = DOTween.Sequence();
             seq.SetEase(UITransition.EASE);
             seq.AppendInterval(delay);
-
-            // TODO: make sure this is used;
-            // manage AnimateDirection based on mode
-            UITransition.AnimateDirection direction = isAnimateForward ? UITransition.AnimateDirection.LEFT : UITransition.AnimateDirection.RIGHT;
 
             // manage starting position based on isShow and isAnimateForward
             float startPositionOffset = 0.0f;
