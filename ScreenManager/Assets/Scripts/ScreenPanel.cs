@@ -45,7 +45,6 @@ public class ScreenPanel : MonoBehaviour {
         }, delay, duration, false);
     }
 
-    // TODO: prevent touch events when animating
     private void _animateScreen(UITransition.AnimateMode mode, bool isAnimateForward, TweenCallback cb, float delay, float duration, bool isShow) {
         if (mode == UITransition.AnimateMode.PAGE) {
             float widthOffset = _rectTransform.rect.width;
