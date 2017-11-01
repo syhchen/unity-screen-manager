@@ -8,7 +8,7 @@ using System.Collections.Generic;
 public class ScreenManager: SingletonMonoBehaviour<ScreenManager>
 {
     public BaseScreen DefaultScreen;
-    public ModalScreen ErrorModal;
+    public ErrorScreen ErrorModal;
     public TitleBar Navigation;
 
     public BaseScreen CurrentScreen { get; private set; }

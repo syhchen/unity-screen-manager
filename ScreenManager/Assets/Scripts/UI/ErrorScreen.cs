@@ -1,17 +1,14 @@
 using UnityEngine;
+using UnityEngine.UI;
 using System;
 using System.Collections.Generic;
 
-public class ModalScreen : MonoBehaviour
+public class ErrorScreen : ModalScreen
 {
-    public GameObject Title;
-    public GameObject Description;
-    public GameObject Button;
+    public Text Title;
+    public Text Description;
+    public Button Button;
 
-    public void Show()
-    {
-        gameObject.SetActive(true);
-    }
     public void ShowError(string titleText, string descText, string buttonText)
     {
         if (!Title || !Description || !Button)
@@ -19,12 +16,10 @@ public class ModalScreen : MonoBehaviour
             throw new Exception("ModalScreen: ShowError(titleText, descText, buttonText) failed, Title, Description, and Button must be set in Inspector.");
         }
 
-        // TODO: set value of GameObjects
+        Title.text = titleText;
+        Description.text = descText;
+        Button.GetComponentInChildren<Text>().text = buttonText;
 
         Show();
-    }
-    public void Hide()
-    {
-        gameObject.SetActive(false);
     }
 }

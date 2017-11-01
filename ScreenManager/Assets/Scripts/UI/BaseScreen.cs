@@ -16,7 +16,7 @@ public class BaseScreen : MonoBehaviour
     public string Name { get; private set; }
     public bool IsTransitioning { get; private set; }
     
-    private ScreenManager _screenManager;
+    protected ScreenManager _screenManager;
     private RectTransform _rectTransform;
 
     public BaseScreen(string name) : base()

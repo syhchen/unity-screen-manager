@@ -8,6 +8,11 @@ public class FirstScreen : BaseScreen
 
     public FirstScreen() : base(NAME) {}
 
+    public void OnPressErrorButton()
+    {
+        _screenManager.ShowErrorModal("First Screen Error", "This is a descrption");
+    }
+
     protected override void WillShow()
     {
         Debug.Log(NAME + ": WillShow()");
