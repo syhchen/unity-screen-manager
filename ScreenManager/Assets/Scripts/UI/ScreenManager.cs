@@ -9,7 +9,7 @@ public class ScreenManager: SingletonMonoBehaviour<ScreenManager>
 {
     public BaseScreen DefaultScreen;
     public ErrorScreen ErrorModal;
-    public TitleBar Navigation;
+    public TitleBar Navigator;
 
     public BaseScreen CurrentScreen { get; private set; }
 
@@ -21,14 +21,14 @@ public class ScreenManager: SingletonMonoBehaviour<ScreenManager>
     {
         base.Awake();
         
-        if (!DefaultScreen || !ErrorModal)
+        if (!DefaultScreen || !ErrorModal || !Navigator)
         {
-            throw new ArgumentException("ScreenManager: Initialize() failed, DefaultScreen and ErrorModal must be set in Inspector.");
+            throw new ArgumentException("ScreenManager: Initialize() failed, DefaultScreen, ErrorModal, Navigator must be set in Inspector.");
         }
 
         // default active states for ErrorModal and TitleBar
         ErrorModal.gameObject.SetActive(false);
-        // TitleBar.gameObject.SetActive(false);
+        Navigator.gameObject.SetActive(false);
 
         Screens = new Dictionary<string, BaseScreen>();
         _navStack = new Stack<BaseScreen>();
@@ -120,6 +120,7 @@ public class ScreenManager: SingletonMonoBehaviour<ScreenManager>
     private void Transition(BaseScreen targetScreen, BaseScreen originScreen, bool isReverse)
     {
         CurrentScreen = targetScreen;
+        Navigator.Title.text = CurrentScreen.Name;
 
         if (originScreen)
         {
