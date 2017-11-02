@@ -10,7 +10,7 @@ public class FirstScreen : BaseScreen
 
     public void OnPressErrorButton()
     {
-        _screenManager.ShowErrorModal("First Screen Error", "This is a descrption");
+        _screenManager.ShowErrorModal("First Screen Error", "This is a description.");
     }
 
     protected override void WillShow()

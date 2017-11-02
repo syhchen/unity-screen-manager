@@ -92,6 +92,8 @@ public class BaseScreen : MonoBehaviour
 
     private void Transition(bool isHide, bool isReverse, Action onComplete)
     {
+        gameObject.SetActive(true);
+
         // set up DOTween sequence
         Sequence seq = DOTween.Sequence();
         seq.SetEase(TRANS_EASE);
@@ -114,9 +116,7 @@ public class BaseScreen : MonoBehaviour
             positionStart = direction * deviceWidth; // then position offscreen, in preparation for transition
             _rectTransform.localPosition = new Vector3(positionStart, 0, 0);
         }
-
-        gameObject.SetActive(true);
-
+        
         seq.Append(transform.DOLocalMoveX(positionEnd, TRANS_DURATION)).OnComplete(() =>
         {
             gameObject.SetActive(!isHide);

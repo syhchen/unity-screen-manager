@@ -26,11 +26,16 @@ public class ScreenManager: SingletonMonoBehaviour<ScreenManager>
             throw new ArgumentException("ScreenManager: Initialize() failed, DefaultScreen and ErrorModal must be set in Inspector.");
         }
 
+        // default active states for ErrorModal and TitleBar
+        ErrorModal.gameObject.SetActive(false);
+        // TitleBar.gameObject.SetActive(false);
+
         Screens = new Dictionary<string, BaseScreen>();
         _navStack = new Stack<BaseScreen>();
 
         foreach (BaseScreen screen in GetComponentsInChildren<BaseScreen>(true))
         {
+            screen.gameObject.SetActive(false);
             screen.Initialize(this);
             Screens[screen.Name] = screen;
         }
