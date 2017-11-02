@@ -1,12 +1,20 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using DG.Tweening;
 
-// TODO: transitions for avatar screen (drag to fade?)
-// TODO: titlebar UI w/ breadcrumbs, how to get titlebar and underlay to animate with screen?
+// TODO: add no animate option (for example, moving from avatar to settings)
+// TODO: add overlay mode, where hiding screen doesn't move and just hides after
+// TODO: set right z index for screens on transition
+// TODO: animate titlebar
 
 public class ScreenManager: SingletonMonoBehaviour<ScreenManager>
 {
+    public const float TRANS_DELAY = 0.0f;
+    public const float TRANS_DURATION = 0.24f;
+    public const float TRANS_PARALLAX = 2.0f;
+    public const Ease TRANS_EASE = Ease.InOutSine;
+
     public BaseScreen DefaultScreen;
     public ErrorScreen ErrorModal;
     public TitleBar Navigator;
@@ -85,6 +93,10 @@ public class ScreenManager: SingletonMonoBehaviour<ScreenManager>
 
             Transition(targetScreen, CurrentScreen, false);
         }
+        else
+        {
+            Debug.Log("ScreenManager: NavigateTo(" + screenName + ") failed, one or more screens current in transition state.");
+        }
     }
 
     public void NavigateBack()
@@ -98,6 +110,10 @@ public class ScreenManager: SingletonMonoBehaviour<ScreenManager>
                 _navStack.Pop();
 
                 Transition(targetScreen, CurrentScreen, true);
+            }
+            else
+            {
+                Debug.Log("ScreenManager: NavigateBack() failed, one or more screens current in transition state.");
             }
         }
     }
@@ -122,11 +138,34 @@ public class ScreenManager: SingletonMonoBehaviour<ScreenManager>
         CurrentScreen = targetScreen;
         Navigator.Title.text = CurrentScreen.Name;
 
+        bool originHasNav = false; // sometimes originScreen is null, so set default value in case it is
+
         if (originScreen)
         {
+            originHasNav = originScreen.HasNavigator;
+            
             originScreen.Hide(isReverse);
         }
         
         targetScreen.Show(isReverse);        
+
+        TransitionNavigator(targetScreen.HasNavigator, originHasNav, isReverse);
+    }
+
+    private void TransitionNavigator(bool targetHasNav, bool originHasNav, bool isReverse)
+    {
+        if (targetHasNav == originHasNav)
+        {
+            return;
+        }
+
+        if (targetHasNav) // hide -> show
+        {
+            Navigator.gameObject.SetActive(true);
+        }
+        if (originHasNav) // show -> hide
+        {
+            Navigator.gameObject.SetActive(false);
+        }
     }
 }

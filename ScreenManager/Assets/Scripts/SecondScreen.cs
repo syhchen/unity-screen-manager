@@ -5,8 +5,9 @@ using System.Collections.Generic;
 public class SecondScreen : BaseScreen
 {
     public static readonly string NAME = "Second Screen";
+    public static readonly bool NAVIGATOR = true;
 
-    public SecondScreen() : base(NAME) {}
+    public SecondScreen() : base(NAME, NAVIGATOR) {}
 
     protected override void WillShow()
     {

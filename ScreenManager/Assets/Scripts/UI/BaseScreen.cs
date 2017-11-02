@@ -3,25 +3,21 @@ using System;
 using System.Collections.Generic;
 using DG.Tweening;
 
-// TODO: figure out good system for underlay
-// TODO: status bar color
+// TODO: status bar color, PlayerSettings.iOS.statusBarStyle?
 
 public class BaseScreen : MonoBehaviour
 {
-    public const float TRANS_DELAY = 0.0f;
-    public const float TRANS_DURATION = 0.24f;
-    public const float TRANS_PARALLAX = 2.0f;
-    public const Ease TRANS_EASE = Ease.InOutSine;
-
     public string Name { get; private set; }
+    public bool HasNavigator { get; private set; }
     public bool IsTransitioning { get; private set; }
     
     protected ScreenManager _screenManager;
     private RectTransform _rectTransform;
 
-    public BaseScreen(string name) : base()
+    public BaseScreen(string name, bool navigator) : base()
     {
         Name = name;
+        HasNavigator = navigator;
     }
 
     public void Initialize(ScreenManager screenManager)
@@ -96,8 +92,8 @@ public class BaseScreen : MonoBehaviour
 
         // set up DOTween sequence
         Sequence seq = DOTween.Sequence();
-        seq.SetEase(TRANS_EASE);
-        seq.AppendInterval(TRANS_DELAY);
+        seq.SetEase(ScreenManager.TRANS_EASE);
+        seq.AppendInterval(ScreenManager.TRANS_DELAY);
 
         // convert isReverse to +/- direction
         int direction = isReverse ? -1 : 1;
@@ -117,7 +113,7 @@ public class BaseScreen : MonoBehaviour
             _rectTransform.localPosition = new Vector3(positionStart, 0, 0);
         }
         
-        seq.Append(transform.DOLocalMoveX(positionEnd, TRANS_DURATION)).OnComplete(() =>
+        seq.Append(transform.DOLocalMoveX(positionEnd, ScreenManager.TRANS_DURATION)).OnComplete(() =>
         {
             gameObject.SetActive(!isHide);
 

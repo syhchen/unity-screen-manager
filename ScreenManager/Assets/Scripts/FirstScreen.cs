@@ -5,8 +5,9 @@ using System.Collections.Generic;
 public class FirstScreen : BaseScreen
 {
     public static readonly string NAME = "First Screen";
+    public static readonly bool NAVIGATOR = true;
 
-    public FirstScreen() : base(NAME) {}
+    public FirstScreen() : base(NAME, NAVIGATOR) {}
 
     public void OnPressErrorButton()
     {
