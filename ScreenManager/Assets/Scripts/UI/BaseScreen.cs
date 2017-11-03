@@ -87,6 +87,16 @@ public class BaseScreen : MonoBehaviour
 
     private void Transition(bool isHide, bool isReverse, Action onComplete)
     {
+        gameObject.SetActive(true);
+
+        int siblingCount = _rectTransform.parent.childCount;
+        int navigatorOffset = HasNavigator ? 1 : 0;
+
+        if (!isHide && !isReverse) // which "card" should be on top for isReverse?
+        {
+            _rectTransform.SetSiblingIndex(siblingCount - navigatorOffset);
+        }
+
         UITransition.Transition(gameObject, ref _rectTransform, isHide, isReverse, onComplete);
     }
 }

@@ -5,9 +5,6 @@ using DG.Tweening;
 
 // TODO: add no animate option (for example, moving from avatar to settings)
 // TODO: add overlay mode, where hiding screen doesn't move and just hides after
-// TODO: set right z index for screens on transition
-// TODO: animate titlebar
-// TODO: implement parallax DURATION*PARALLAX_MULT
 
 public class ScreenManager: SingletonMonoBehaviour<ScreenManager>
 {
