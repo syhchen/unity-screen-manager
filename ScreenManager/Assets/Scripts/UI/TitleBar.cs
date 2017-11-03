@@ -49,17 +49,16 @@ public class TitleBar : MonoBehaviour
     {
         gameObject.SetActive(true);
 
-        // get the container that holds all overlays
-        Transform overlayContainer = _rectTransform.parent;
+        Transform overlayContainerTransform = _rectTransform.parent;
 
-        int siblingCount = overlayContainer.parent.childCount;
+        int siblingCount = overlayContainerTransform.parent.childCount;
         int navigatorOffset = gameObject.activeSelf ? 0 : 1;
 
-        if (!isHide && !isReverse) // which "card" should be on top for reverse?
+        if (!isHide && !isReverse) // right-most screen is always on top
         {
-            overlayContainer.SetSiblingIndex(siblingCount - navigatorOffset);
+            overlayContainerTransform.SetSiblingIndex(siblingCount - navigatorOffset);
         }
 
-        UITransition.Transition(gameObject, ref _rectTransform, isHide, isReverse, onComplete);
+        UITransition.Transition(ref _rectTransform, isHide, isReverse, onComplete);
     }
 }

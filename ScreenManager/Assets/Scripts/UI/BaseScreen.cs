@@ -92,11 +92,11 @@ public class BaseScreen : MonoBehaviour
         int siblingCount = _rectTransform.parent.childCount;
         int navigatorOffset = HasNavigator ? 1 : 0;
 
-        if (!isHide && !isReverse) // which "card" should be on top for isReverse?
+        if (!isHide && !isReverse) // right-most screen is always on top
         {
             _rectTransform.SetSiblingIndex(siblingCount - navigatorOffset);
         }
 
-        UITransition.Transition(gameObject, ref _rectTransform, isHide, isReverse, onComplete);
+        UITransition.Transition(ref _rectTransform, isHide, isReverse, onComplete);
     }
 }
