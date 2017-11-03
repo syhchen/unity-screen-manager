@@ -11,11 +11,6 @@ using DG.Tweening;
 
 public class ScreenManager: SingletonMonoBehaviour<ScreenManager>
 {
-    public const float TRANS_DELAY = 0.0f;
-    public const float TRANS_DURATION = 0.24f;
-    public const float TRANS_PARALLAX = 2.0f;
-    public const Ease TRANS_EASE = Ease.InOutSine;
-
     public BaseScreen DefaultScreen;
     public ErrorScreen ErrorModal;
     public TitleBar Navigator;
@@ -137,36 +132,26 @@ public class ScreenManager: SingletonMonoBehaviour<ScreenManager>
     private void Transition(BaseScreen targetScreen, BaseScreen originScreen, bool isReverse)
     {
         CurrentScreen = targetScreen;
-        Navigator.Title.text = CurrentScreen.Name;
-
-        bool originHasNav = false; // sometimes originScreen is null, so set default value in case it is
 
         if (originScreen)
-        {
-            originHasNav = originScreen.HasNavigator;
-            
+        {            
             originScreen.Hide(isReverse);
         }
         
         targetScreen.Show(isReverse);        
 
-        TransitionNavigator(targetScreen.HasNavigator, originHasNav, isReverse);
+        TransitionNavigator(targetScreen, isReverse);
     }
 
-    private void TransitionNavigator(bool targetHasNav, bool originHasNav, bool isReverse)
+    private void TransitionNavigator(BaseScreen targetScreen, bool isReverse)
     {
-        if (targetHasNav == originHasNav)
+        if (targetScreen.HasNavigator)
         {
-            return;
+            Navigator.Show(targetScreen.Name, isReverse);
         }
-
-        if (targetHasNav) // hide -> show
+        else
         {
-            Navigator.gameObject.SetActive(true);
-        }
-        if (originHasNav) // show -> hide
-        {
-            Navigator.gameObject.SetActive(false);
+            Navigator.Hide(isReverse);
         }
     }
 }

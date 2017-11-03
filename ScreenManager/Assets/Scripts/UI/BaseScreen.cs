@@ -1,7 +1,6 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
-using DG.Tweening;
 
 // TODO: status bar color, PlayerSettings.iOS.statusBarStyle?
 
@@ -88,36 +87,6 @@ public class BaseScreen : MonoBehaviour
 
     private void Transition(bool isHide, bool isReverse, Action onComplete)
     {
-        gameObject.SetActive(true);
-
-        // set up DOTween sequence
-        Sequence seq = DOTween.Sequence();
-        seq.SetEase(ScreenManager.TRANS_EASE);
-        seq.AppendInterval(ScreenManager.TRANS_DELAY);
-
-        // convert isReverse to +/- direction
-        int direction = isReverse ? -1 : 1;
-
-        // get screen dimension, set up default start and end positions
-        float deviceWidth = _rectTransform.rect.width;
-        float positionStart = 0.0f;
-        float positionEnd = 0.0f;
-
-        if (isHide)
-        {
-            positionEnd = -direction * deviceWidth; // already onscreen, no need to adjust start position
-        }
-        else // (isShow)
-        {
-            positionStart = direction * deviceWidth; // then position offscreen, in preparation for transition
-            _rectTransform.localPosition = new Vector3(positionStart, 0, 0);
-        }
-        
-        seq.Append(transform.DOLocalMoveX(positionEnd, ScreenManager.TRANS_DURATION)).OnComplete(() =>
-        {
-            gameObject.SetActive(!isHide);
-
-            onComplete();
-        });
+        UITransition.Transition(gameObject, ref _rectTransform, isHide, isReverse, onComplete);
     }
 }

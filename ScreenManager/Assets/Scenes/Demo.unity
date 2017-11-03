@@ -233,7 +233,7 @@ GameObject:
   - component: {fileID: 79885467}
   - component: {fileID: 79885466}
   m_Layer: 5
-  m_Name: ButtonToSecondScreen
+  m_Name: GoToSecondScreen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -354,7 +354,7 @@ GameObject:
   - component: {fileID: 137903128}
   - component: {fileID: 137903127}
   m_Layer: 5
-  m_Name: TextTitle
+  m_Name: TitleText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -428,7 +428,7 @@ GameObject:
   - component: {fileID: 175765863}
   - component: {fileID: 175765862}
   m_Layer: 5
-  m_Name: Title
+  m_Name: TitleText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -573,7 +573,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f852624530a7c42d0a13bede901e9eb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Title: {fileID: 175765862}
+  TitleText: {fileID: 175765862}
+  BackButton: {fileID: 1360696969}
 --- !u!1 &226493653
 GameObject:
   m_ObjectHideFlags: 0
@@ -660,7 +661,7 @@ GameObject:
   - component: {fileID: 442959605}
   - component: {fileID: 442959604}
   m_Layer: 5
-  m_Name: ButtonShowModal
+  m_Name: ShowError
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -782,7 +783,7 @@ GameObject:
   - component: {fileID: 547649360}
   - component: {fileID: 547649359}
   m_Layer: 5
-  m_Name: ButtonBack
+  m_Name: GoBack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1016,7 +1017,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.9372549, g: 0.9372549, b: 0.95686275, a: 1}
+  m_Color: {r: 0.78431374, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -1098,9 +1099,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f246112787e9b404b8a864d0a81567ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Title: {fileID: 137903127}
-  Description: {fileID: 1061794108}
-  Button: {fileID: 1619420674}
+  TitleText: {fileID: 137903127}
+  DescText: {fileID: 1061794108}
+  CloseButton: {fileID: 1619420674}
 --- !u!114 &742142153
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1220,7 +1221,7 @@ GameObject:
   - component: {fileID: 798879801}
   - component: {fileID: 798879800}
   m_Layer: 5
-  m_Name: ButtonBack
+  m_Name: GoBack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1341,7 +1342,7 @@ GameObject:
   - component: {fileID: 1061794109}
   - component: {fileID: 1061794108}
   m_Layer: 5
-  m_Name: TextDescription
+  m_Name: DescText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1421,7 +1422,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1251505376
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1499,7 +1500,7 @@ GameObject:
   - component: {fileID: 1360696970}
   - component: {fileID: 1360696969}
   m_Layer: 5
-  m_Name: ButtonBack
+  m_Name: BackButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1701,7 +1702,7 @@ GameObject:
   - component: {fileID: 1619420675}
   - component: {fileID: 1619420674}
   m_Layer: 5
-  m_Name: ButtonCloseModal
+  m_Name: CloseButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1823,7 +1824,7 @@ GameObject:
   - component: {fileID: 1716448844}
   - component: {fileID: 1716448843}
   m_Layer: 5
-  m_Name: ButtonToFirstScreen
+  m_Name: GoToFirstScreen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2185,7 +2186,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Show Modal
+  m_Text: Show Error
 --- !u!222 &2003429441
 CanvasRenderer:
   m_ObjectHideFlags: 0

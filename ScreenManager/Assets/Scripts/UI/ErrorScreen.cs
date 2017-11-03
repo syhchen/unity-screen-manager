@@ -5,20 +5,22 @@ using System.Collections.Generic;
 
 public class ErrorScreen : ModalScreen
 {
-    public Text Title;
-    public Text Description;
-    public Button Button;
+    public Text TitleText;
+    public Text DescText;
+    public Button CloseButton;
 
     public void ShowError(string titleText, string descText, string buttonText)
     {
-        if (!Title || !Description || !Button)
+        if (!TitleText || !DescText || !CloseButton)
         {
             throw new Exception("ModalScreen: ShowError(titleText, descText, buttonText) failed, Title, Description, and Button must be set in Inspector.");
         }
 
-        Title.text = titleText;
-        Description.text = descText;
-        Button.GetComponentInChildren<Text>().text = buttonText;
+        TitleText.text = titleText;
+
+        DescText.text = descText;
+        
+        CloseButton.GetComponentInChildren<Text>().text = buttonText;
 
         Show();
     }

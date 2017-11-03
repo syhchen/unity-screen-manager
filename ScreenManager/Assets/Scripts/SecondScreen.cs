@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class SecondScreen : BaseScreen
 {
     public static readonly string NAME = "Second Screen";
-    public static readonly bool NAVIGATOR = true;
+    public static readonly bool NAVIGATOR = false;
 
     public SecondScreen() : base(NAME, NAVIGATOR) {}
 
