@@ -29,13 +29,13 @@ public class BaseScreen : MonoBehaviour
         _rectTransform = gameObject.GetComponent<RectTransform>();
     }
 
-    public void Show(bool isReverse)
+    public void Show(bool isReverse, Action onTransitionComplete = null)
     {
         StageShow();
 
         Transition(false, isReverse, () =>
         {
-            DeStageShow();
+            DeStageShow(onTransitionComplete);
         });
     }
 
@@ -50,20 +50,22 @@ public class BaseScreen : MonoBehaviour
         WillShow();
     }
 
-    private void DeStageShow()
+    private void DeStageShow(Action onTransitionComplete = null)
     {
         IsTransitioning = false;
+
+        onTransitionComplete();
 
         OnShow();
     }
 
-    public void Hide(bool isReverse)
+    public void Hide(bool isReverse, Action onTransitionComplete = null)
     {
         StageHide();
 
         Transition(true, isReverse, () =>
         {
-            DeStageHide();
+            DeStageHide(onTransitionComplete);
         });
     }
 
@@ -78,14 +80,16 @@ public class BaseScreen : MonoBehaviour
         WillHide();
     }
 
-    private void DeStageHide()
+    private void DeStageHide(Action onTransitionComplete = null)
     {
         IsTransitioning = false;
+
+        onTransitionComplete();
 
         OnHide();
     }
 
-    private void Transition(bool isHide, bool isReverse, Action onComplete)
+    private void Transition(bool isHide, bool isReverse, Action callback)
     {
         gameObject.SetActive(true);
 
@@ -97,6 +101,6 @@ public class BaseScreen : MonoBehaviour
             _rectTransform.SetSiblingIndex(siblingCount - navigatorOffset);
         }
 
-        UITransition.Transition(ref _rectTransform, isHide, isReverse, onComplete);
+        UITransition.Transition(ref _rectTransform, isHide, isReverse, callback);
     }
 }

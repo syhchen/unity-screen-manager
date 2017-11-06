@@ -6,7 +6,7 @@ using DG.Tweening;
 public class UITransition : MonoBehaviour
 {
     public const float DELAY = 0.0f;
-    public const float DURATION = 0.24f;
+    public const float DURATION = 1.24f;
     public const float PARALLAX = 1.0f;
     public const Ease EASE = Ease.InOutSine;
     // public const bool LINEAR = true; // override Ease function

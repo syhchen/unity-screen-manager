@@ -17,6 +17,8 @@ public class ScreenManager: SingletonMonoBehaviour<ScreenManager>
     public Dictionary<string, BaseScreen> Screens { get; private set; }
 
     private Stack<BaseScreen> _navStack;
+    private BaseScreen _waitingScreen;
+    private bool _isShowing, _isHiding;
 
     protected override void Awake()
     {
@@ -33,6 +35,8 @@ public class ScreenManager: SingletonMonoBehaviour<ScreenManager>
 
         Screens = new Dictionary<string, BaseScreen>();
         _navStack = new Stack<BaseScreen>();
+        _isShowing = false;
+        _isHiding = false;;
 
         foreach (BaseScreen screen in GetComponentsInChildren<BaseScreen>(true))
         {
@@ -82,12 +86,16 @@ public class ScreenManager: SingletonMonoBehaviour<ScreenManager>
 
         if (CanTransition(targetScreen, CurrentScreen))
         {
+            _waitingScreen = null;
+
             _navStack.Push(CurrentScreen);
 
             Transition(targetScreen, CurrentScreen, false);
         }
         else
         {
+            _waitingScreen = targetScreen;
+
             Debug.Log("ScreenManager: NavigateTo(" + screenName + ") failed, one or more screens current in transition state.");
         }
     }
@@ -100,12 +108,16 @@ public class ScreenManager: SingletonMonoBehaviour<ScreenManager>
 
             if (CanTransition(targetScreen, CurrentScreen))
             {
+                _waitingScreen = null;
+
                 _navStack.Pop();
 
                 Transition(targetScreen, CurrentScreen, true);
             }
             else
             {
+                _waitingScreen = targetScreen;
+
                 Debug.Log("ScreenManager: NavigateBack() failed, one or more screens current in transition state.");
             }
         }
@@ -131,11 +143,35 @@ public class ScreenManager: SingletonMonoBehaviour<ScreenManager>
         CurrentScreen = targetScreen;
 
         if (originScreen)
-        {            
-            originScreen.Hide(isReverse);
+        {
+            _isHiding = true;
+
+            originScreen.Hide(isReverse, () =>
+            {
+                if (_waitingScreen && _isHiding == true)
+                {
+                    _isHiding = false;
+
+                    _waitingScreen = null;
+
+                    Transition(originScreen, _waitingScreen, isReverse);
+                }
+            });
         }
         
-        targetScreen.Show(isReverse);        
+        _isShowing = true;
+
+        targetScreen.Show(isReverse, () =>
+        {
+            if (_waitingScreen && _isShowing == true)
+            {
+                _isShowing = false;
+
+                _waitingScreen = null;
+
+                Transition(originScreen, _waitingScreen, isReverse);
+            }
+        });
 
         TransitionNavigator(targetScreen, isReverse);
     }
