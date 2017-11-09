@@ -59,6 +59,12 @@ public class TitleBar : MonoBehaviour
             overlayContainerTransform.SetSiblingIndex(siblingCount - navigatorOffset);
         }
 
-        UITransition.Transition(ref _rectTransform, isHide, isReverse, onComplete);
+        Action setAsLastSibling = () => {
+            overlayContainerTransform.SetAsLastSibling();
+
+            onComplete();
+        };
+
+        UITransition.Transition(ref _rectTransform, isHide, isReverse, setAsLastSibling);
     }
 }
