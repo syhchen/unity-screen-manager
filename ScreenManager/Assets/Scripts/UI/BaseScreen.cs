@@ -97,6 +97,13 @@ public class BaseScreen : MonoBehaviour
             _rectTransform.SetSiblingIndex(siblingCount - navigatorOffset);
         }
 
-        UITransition.Transition(ref _rectTransform, isHide, isReverse, onComplete);
+        Action setNavigatorZ = () =>
+        {
+            _screenManager.Navigator.SetZ();
+
+            onComplete();
+        };
+
+        UITransition.Transition(ref _rectTransform, isHide, isReverse, setNavigatorZ);
     }
 }

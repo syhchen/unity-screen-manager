@@ -45,6 +45,18 @@ public class TitleBar : MonoBehaviour
         }
     }
 
+    public void SetZ()
+    {
+        if (!IsTransitioning)
+        {
+            _rectTransform.parent.SetAsLastSibling();
+        }
+        else
+        {
+            Invoke("SetZ", 0.02f); // keep checking until screen is no longer transitioning
+        }
+    }
+
     private void Transition(bool isHide, bool isReverse, Action onComplete)
     {
         gameObject.SetActive(true);
@@ -59,12 +71,6 @@ public class TitleBar : MonoBehaviour
             overlayContainerTransform.SetSiblingIndex(siblingCount - navigatorOffset);
         }
 
-        Action setAsLastSibling = () => {
-            overlayContainerTransform.SetAsLastSibling();
-
-            onComplete();
-        };
-
-        UITransition.Transition(ref _rectTransform, isHide, isReverse, setAsLastSibling);
+        UITransition.Transition(ref _rectTransform, isHide, isReverse, onComplete);
     }
 }
