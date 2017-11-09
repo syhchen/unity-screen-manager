@@ -14,6 +14,11 @@ public class TitleBar : MonoBehaviour
 
     protected virtual void Awake()
     {
+        Initialize();
+    }
+
+    public void Initialize()
+    {
         _rectTransform = gameObject.GetComponent<RectTransform>();
     }
 
@@ -47,6 +52,11 @@ public class TitleBar : MonoBehaviour
 
     public void SetZ()
     {
+        if (!_rectTransform)
+        {
+            Initialize();
+        }
+
         if (!IsTransitioning)
         {
             _rectTransform.parent.SetAsLastSibling();
